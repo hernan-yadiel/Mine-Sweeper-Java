@@ -33,7 +33,7 @@ public class MyPanel extends JPanel {
 		
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				colorArray[x][y] = Color.WHITE;
+				colorArray[x][y] = new Color(0xC0C0C0);
 			}
 		}
 	}
@@ -51,10 +51,9 @@ public class MyPanel extends JPanel {
 		int height = y2 - y1;
 
 		//Paint the background
-		g.setColor(Color.LIGHT_GRAY);
+		g.setColor(new Color(0x708090));
 		g.fillRect(x1, y1, width + 1, height + 1);
 
-		//Draw the grid minus the bottom row (which has only one cell)
 		//By default, the grid will be 10x10 (see above: TOTAL_COLUMNS and TOTAL_ROWS) 
 		g.setColor(Color.BLACK);
 		for (int y = 0; y <= TOTAL_ROWS ; y++) {
