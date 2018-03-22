@@ -35,20 +35,21 @@ public class MyPanel extends JPanel {
 		
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				colorArray[x][y] = new Color(0xFFFFFF);
+				colorArray[x][y] = Color.WHITE;	
+				///colorArray[x][y] = new Color(0xFFFFFF);
 			}
 		}
 		
-		for (int i=0; i< minesArray.length;i++) {
+		for (int i = 0; i < minesArray.length; i++) {
 			minesArray[i] = new int[2];
 			int[] coordinatesArray = minesArray[i]; //stores the array of coordinates
-			for (int j=0; j<minesArray[i].length; j++) {
-				int randomNum= generator.nextInt(9);
-				if (i>0 && j>0 && verifyCoordinates(minesArray, coordinatesArray[0], randomNum, i)) { //verifies that the number is not repeated on the second iteration
-					System.out.println("Repeated: "+coordinatesArray[0]+ " "+ randomNum);
+			for (int j = 0; j < minesArray[i].length; j++) {
+				int randomNum = generator.nextInt(9);
+				if (i > 0 && j > 0 && verifyCoordinates(minesArray, coordinatesArray[0], randomNum, i)) { //verifies that the number is not repeated on the second iteration
+					System.out.println("Repeated: " + coordinatesArray[0] + " " + randomNum);
 					randomNum = generator.nextInt(9);
 					minesArray[i][j] = randomNum;
-				}else {
+				} else {
 					minesArray[i][j] = randomNum;
 				}
 
@@ -109,7 +110,7 @@ public class MyPanel extends JPanel {
 
 		//By default, the grid will be 10x10 (see above: TOTAL_COLUMNS and TOTAL_ROWS) 
 		g.setColor(Color.BLACK);
-		for (int y = 0; y <= TOTAL_ROWS ; y++) {
+		for (int y = 0; y <= TOTAL_ROWS; y++) {
 			g.drawLine(x1 + GRID_X, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)), x1 + GRID_X + ((INNER_CELL_SIZE + 1) * TOTAL_COLUMNS), y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)));
 		}
 		for (int x = 0; x <= TOTAL_COLUMNS; x++) {
@@ -135,7 +136,8 @@ public class MyPanel extends JPanel {
 		if((x<0) || (y<0) || (x>=9) || (y>=9)){
 			return;
 			} else {
-			colorArray[x][y] = Color.WHITE;
+			///colorArray[x][y] = Color.WHITE;
+			colorArray[x][y] = Color.GRAY;
 			revealAdjacent(x-1, y);
 			revealAdjacent(x+1, y);
 			revealAdjacent(x, y-1);
