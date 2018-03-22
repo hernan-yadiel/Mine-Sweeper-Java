@@ -136,8 +136,13 @@ public class MyMouseAdapter extends MouseAdapter {
 				myPanel.repaint();
 				break;
 			case 3:		//Right mouse button
+				if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.LIGHT_GRAY) {
+					//myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
+					System.out.println("Entro aqui");
+					//Do nothing
+				}
 				// Check whether there was a flag in the clicked grid or not, if so the grid is changed back to uncovered (White).
-				if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
+				else if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
 					myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
 				} else { // If NOT, a flag is placed in the grid(is painted in red).
 					myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
