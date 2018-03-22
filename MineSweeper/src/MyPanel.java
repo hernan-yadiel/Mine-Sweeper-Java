@@ -17,8 +17,10 @@ public class MyPanel extends JPanel {
 	public int y = -1;
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
+	private Random generator = new Random();
 	
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
+	public int[][] minesArray = new int[TOTAL_COLUMNS+1][];
 	
 	public MyPanel() {   //This is the constructor... this code runs first to initialize
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
@@ -33,9 +35,60 @@ public class MyPanel extends JPanel {
 		
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				colorArray[x][y] = new Color(0xC0C0C0);
+				colorArray[x][y] = new Color(0xFFFFFF);
 			}
 		}
+		
+		for (int i=0; i< minesArray.length;i++) {
+			minesArray[i] = new int[2];
+			int[] coordinatesArray = minesArray[i]; //stores the array of coordinates
+			for (int j=0; j<minesArray[i].length; j++) {
+				int randomNum= generator.nextInt(9);
+				if (i>0 && j>0 && verifyCoordinates(minesArray, coordinatesArray[0], randomNum, i)) { //verifies that the number is not repeated on the second iteration
+					System.out.println("Repeated: "+coordinatesArray[0]+ " "+ randomNum);
+					randomNum = generator.nextInt(9);
+					minesArray[i][j] = randomNum;
+				}else {
+					minesArray[i][j] = randomNum;
+				}
+
+			}
+		}
+		
+		for (int i=0; i< minesArray.length;i++) {
+			System.out.println(" ");
+			for (int j=0; j<minesArray[i].length; j++) {
+				System.out.print(minesArray[i][j]);
+			}
+		}
+	} 
+	
+	/**
+	 * Test if the given X and Y coordinates are in the Coordinate Array
+	 * @param minesArray to be verified
+	 * @param xCoordinate X Coordinate
+	 * @param yCoordinate Y Coordinate
+	 * @param iteration Iteration variable of the outside for loop
+	 * @return True if the given coordinates are found in the array.
+	 */
+	public boolean verifyCoordinates(int [][] minesArray, int xCoordinate, int yCoordinate, int iteration) {
+		boolean verification = false;
+		int[] verificationArray = new int[2];
+		for (int i=0; i<iteration ;i++) {
+			verificationArray = minesArray[i];
+			if (verificationArray[0]==xCoordinate && verificationArray[1]== yCoordinate) { //verifies that coordinates given are not in the array supplied
+				return true;
+			}
+		} 
+		
+		return verification;
+	}
+	
+	public boolean verifyCoordinates(int [][] minesArray, int xCoordinate, int yCoordinate) {
+		boolean verification = false;
+		int iteration = minesArray.length;
+		verification = verifyCoordinates(minesArray, xCoordinate, yCoordinate, iteration);
+		return verification;
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -79,19 +132,17 @@ public class MyPanel extends JPanel {
 	// Verify that the coordinates in the parameters are valid.
 	// Also verifies if there are any mines around the x,y coordinate
 	public void revealAdjacent(int x, int y){
-		if((x<0) || (y<0) || (x>=9) || (y>=9)){return;}
-
-		else {
-			colorArray[x][y] = Color.GRAY;
+		if((x<0) || (y<0) || (x>=9) || (y>=9)){
+			return;
+			} else {
+			colorArray[x][y] = Color.WHITE;
 			revealAdjacent(x-1, y);
 			revealAdjacent(x+1, y);
 			revealAdjacent(x, y-1);
 			revealAdjacent(x, y+1);
-		}
-		
+			}
 		System.out.println("Test");
-
-	}
+		}
 
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();

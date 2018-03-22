@@ -3,13 +3,11 @@ import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 import javax.swing.JFrame;
 
 public class MyMouseAdapter extends MouseAdapter {
 	
-	private Random generator = new Random();
 	
 	public void mousePressed(MouseEvent e) {
 		switch (e.getButton()) {
@@ -66,8 +64,7 @@ public class MyMouseAdapter extends MouseAdapter {
 				myPanel.y = y;
 				int gridX = myPanel.getGridX(x, y);
 				int gridY = myPanel.getGridY(x, y);
-//				System.out.println(gridX);
-//				System.out.println(gridY);
+
 				if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
 					//Had pressed outside
 					//Do nothing
@@ -80,33 +77,21 @@ public class MyMouseAdapter extends MouseAdapter {
 							//Released the mouse button on a different cell where it was pressed
 							//Do nothing
 						} else {
-							//Released the mouse button on the same cell where it was pressed
-							Color newColor = new Color(0xFFFFFF);
-//							switch (generator.nextInt(5)) {
-//								case 0:
-//									newColor = Color.YELLOW;
-//									break;
-//								case 1:
-//									newColor = Color.MAGENTA;
-//									break;
-//								case 2:
-//									newColor = Color.BLACK;
-//									break;
-//								case 3:
-//									newColor = new Color(0x964B00);   //Brown (from http://simple.wikipedia.org/wiki/List_of_colors)
-//									break;
-//								case 4:
-//									newColor = new Color(0xB57EDC);   //Lavender (from http://simple.wikipedia.org/wiki/List_of_colors)
-//									break;
-//							}
-							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = newColor;
-							myPanel.repaint();
+							//Released the mouse on a mine
+							if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
+								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK; 
+							}else {
+								//Released the mouse button on the same cell where it was pressed
+								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
+								myPanel.repaint();
+							}
 						}
 					}
 				}
 				myPanel.repaint();
 				break;
 			case 3:		//Right mouse button
+				
 				//Do nothing
 				break;
 			default:    //Some other button (2 = Middle mouse button, etc.)
