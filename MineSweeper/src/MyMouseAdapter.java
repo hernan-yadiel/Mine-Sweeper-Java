@@ -24,20 +24,7 @@ public class MyMouseAdapter extends MouseAdapter {
 		int x1 = myInsets.left;
 		int y1 = myInsets.top;
 		switch (e.getButton()) {
-			case 1:		//Left mouse button
-//				Component c = e.getComponent();
-//				while (!(c instanceof JFrame)) {
-//					c = c.getParent();
-//					if (c == null) {
-//						return;
-//					}
-//				}
-//				
-//				JFrame myFrame = (JFrame) c;
-//				MyPanel myPanel = (MyPanel) myFrame.getContentPane().getComponent(0);
-//				Insets myInsets = myFrame.getInsets();
-//				int x1 = myInsets.left;
-//				int y1 = myInsets.top;
+			case 1:
 				e.translatePoint(-x1, -y1);
 				int x = e.getX();
 				int y = e.getY();
@@ -85,25 +72,6 @@ public class MyMouseAdapter extends MouseAdapter {
 		
 		switch (e.getButton()) {
 			case 1:		//Left mouse button
-//				Component c = e.getComponent();
-//				while (!(c instanceof JFrame)) {
-//					c = c.getParent();
-//					if (c == null) {
-//						return;
-//					}
-//				}
-//				JFrame myFrame = (JFrame)c;
-//				MyPanel myPanel = (MyPanel) myFrame.getContentPane().getComponent(0);  //Can also loop among components to find MyPanel
-//				Insets myInsets = myFrame.getInsets();
-//				int x1 = myInsets.left;
-//				int y1 = myInsets.top;
-//				e.translatePoint(-x1, -y1);
-//				int x = e.getX();
-//				int y = e.getY();
-//				myPanel.x = x;
-//				myPanel.y = y;
-//				int gridX = myPanel.getGridX(x, y);
-//				int gridY = myPanel.getGridY(x, y);
 
 				if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
 					//Had pressed outside
@@ -122,8 +90,6 @@ public class MyMouseAdapter extends MouseAdapter {
 								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK; 
 							}else {
 								//Released the mouse button on the same cell where it was pressed
-								///myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
-								///myPanel.repaint();
 								if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
 									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
 								} else {
@@ -137,8 +103,6 @@ public class MyMouseAdapter extends MouseAdapter {
 				break;
 			case 3:		//Right mouse button
 				if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.LIGHT_GRAY) {
-					//myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
-					System.out.println("Entro aqui");
 					//Do nothing
 				}
 				// Check whether there was a flag in the clicked grid or not, if so the grid is changed back to uncovered (White).

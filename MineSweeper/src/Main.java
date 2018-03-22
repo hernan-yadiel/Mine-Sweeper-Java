@@ -6,7 +6,7 @@ public class Main {
 		JFrame myFrame = new JFrame("Mine Sweeper");
 		myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		myFrame.setLocation(400, 150);
-		myFrame.setSize(900, 900);
+		myFrame.setSize(700, 700);
 
 		MyPanel myPanel = new MyPanel();
 		myFrame.add(myPanel);
