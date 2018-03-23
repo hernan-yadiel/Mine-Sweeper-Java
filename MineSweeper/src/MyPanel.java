@@ -95,12 +95,11 @@ public class MyPanel extends JPanel {
 		int y2 = getHeight() - myInsets.bottom;
 		int width = x2 - x1;
 		int height = y2 - y1;
-
 		//Paint the background
 		g.setColor(new Color(0x708090));
 		g.fillRect(x1, y1, width + 1, height + 1);
 
-		
+
 		g.setColor(Color.BLACK);
 		for (int y = 0; y <= TOTAL_ROWS ; y++) {
 			g.drawLine(x1 + GRID_X, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)), x1 + GRID_X + ((INNER_CELL_SIZE + 1) * TOTAL_COLUMNS), y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)));
@@ -163,7 +162,6 @@ public class MyPanel extends JPanel {
 		if(verifyCoordinates(minesArray, x-1, y+1)) {nearMines +=1;}
 		if(verifyCoordinates(minesArray, x+1, y-1)) {nearMines +=1;}
 		if(verifyCoordinates(minesArray, x-1, y-1)) {nearMines +=1;}
-		System.out.println(nearMines + " mines near: " + x + ","+ y+ " "+nearMine);
 		return nearMine;
 	}	
 	
