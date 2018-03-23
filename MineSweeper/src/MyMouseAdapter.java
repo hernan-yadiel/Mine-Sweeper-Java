@@ -24,7 +24,7 @@ public class MyMouseAdapter extends MouseAdapter {
 		int x1 = myInsets.left;
 		int y1 = myInsets.top;
 		switch (e.getButton()) {
-			case 1:
+			case 1: //left mouse button
 				e.translatePoint(-x1, -y1);
 				int x = e.getX();
 				int y = e.getY();
@@ -89,9 +89,9 @@ public class MyMouseAdapter extends MouseAdapter {
 							if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
 								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK; 
 							}else {
-								
-								myPanel.revealAdjacent(gridX, gridY);
 								//Released the mouse button on the same cell where it was pressed
+								myPanel.revealAdjacent(gridX, gridY);
+								
 								if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
 									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
 								} else {

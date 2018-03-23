@@ -1,6 +1,8 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JPanel;
@@ -19,6 +21,7 @@ public class MyPanel extends JPanel {
 	public int mouseDownGridY = 0;
 	private Random generator = new Random();
 	
+	public ArrayList<Integer[]> cellsNearMines = new ArrayList<Integer[]>();
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	public int[][] minesArray = new int[TOTAL_COLUMNS+1][];
 	
@@ -46,7 +49,6 @@ public class MyPanel extends JPanel {
 			for (int j=0; j<minesArray[i].length; j++) {
 				int randomNum= generator.nextInt(9);
 				if (i>0 && j>0 && verifyCoordinates(minesArray, coordinatesArray[0], randomNum, i)) { //verifies that the number is not repeated on the second iteration
-					System.out.println("Repeated: "+coordinatesArray[0]+ " "+ randomNum);
 					randomNum = generator.nextInt(9);
 					minesArray[i][j] = randomNum;
 				}else {
@@ -98,8 +100,8 @@ public class MyPanel extends JPanel {
 		//Paint the background
 		g.setColor(new Color(0x708090));
 		g.fillRect(x1, y1, width + 1, height + 1);
-
-
+		
+		
 		g.setColor(Color.BLACK);
 		for (int y = 0; y <= TOTAL_ROWS ; y++) {
 			g.drawLine(x1 + GRID_X, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)), x1 + GRID_X + ((INNER_CELL_SIZE + 1) * TOTAL_COLUMNS), y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)));
@@ -111,9 +113,20 @@ public class MyPanel extends JPanel {
 
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				Color c = colorArray[x][y];			
+				Color c = colorArray[x][y];
 				g.setColor(c);
 				g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
+			}
+		}
+		
+		g.setColor(Color.WHITE); 
+		g.setFont(new Font("TimesRoman", Font.PLAIN, GRID_X));
+		for (int i=0; i<cellsNearMines.size(); i++) {
+			Integer[] coordinatesAndMines = cellsNearMines.get(i);
+			for (int j=0; j<coordinatesAndMines.length; j++) {
+				if (coordinatesAndMines[2] >0) {
+					g.drawString(Integer.toString(coordinatesAndMines[2]), x1+ (GRID_X*2) + (coordinatesAndMines[0]* (INNER_CELL_SIZE + 1)), y1 + (GRID_Y*3) + (coordinatesAndMines[1] * (INNER_CELL_SIZE+1)+1));
+				}
 			}
 		}
 	}
@@ -123,9 +136,10 @@ public class MyPanel extends JPanel {
 	// Verify that the coordinates in the parameters are valid.
 	// Also verifies if there are any mines around the x,y coordinate
 	public void revealAdjacent(int x, int y){
+
 		if((x<0) || (y<0) || (x>8) || (y>8)){
 			return;
-			} else if(!verifyCoordinates(minesArray, x, y) && isRevealed(x, y) && !(nearMine(x, y))){
+			} else if(isRevealed(x, y) && !(nearMine(x, y))){
 			colorArray[x][y] = Color.GRAY;
 			revealAdjacent(x, y+1);
 			revealAdjacent(x, y-1);
@@ -143,6 +157,7 @@ public class MyPanel extends JPanel {
 	public boolean nearMine(int x,int y) {
 		boolean nearMine = false;
 		int nearMines = 0;
+		
 		if(verifyCoordinates(minesArray, x+1, y) ||
 				verifyCoordinates(minesArray, x-1, y) ||
 				verifyCoordinates(minesArray, x, y+1) ||
@@ -152,8 +167,10 @@ public class MyPanel extends JPanel {
 				verifyCoordinates(minesArray, x-1, y-1) ||
 				verifyCoordinates(minesArray, x-1, y+1)) {
 			nearMine = true;
-			colorArray[x][y] = Color.GRAY;
+			colorArray[x][y] = Color.GRAY;			
 		}
+		
+		
 		if(verifyCoordinates(minesArray, x+1, y)) {nearMines +=1;}
 		if(verifyCoordinates(minesArray, x-1, y)) {nearMines +=1;}
 		if(verifyCoordinates(minesArray, x, y+1)) {nearMines +=1;}
@@ -162,7 +179,13 @@ public class MyPanel extends JPanel {
 		if(verifyCoordinates(minesArray, x-1, y+1)) {nearMines +=1;}
 		if(verifyCoordinates(minesArray, x+1, y-1)) {nearMines +=1;}
 		if(verifyCoordinates(minesArray, x-1, y-1)) {nearMines +=1;}
-		return nearMine;
+		
+		if(nearMine == true) {
+			Integer[] minesNearCells = {x,y, nearMines};
+			cellsNearMines.add(minesNearCells);
+		}
+		
+ 		return nearMine;
 	}	
 	
 	/**
@@ -192,6 +215,10 @@ public class MyPanel extends JPanel {
 		if (y < 0) {   //Above the grid
 			return -1;
 		}
+		
+//		if (x > 8) {
+//			return -1;
+//		}
 		if ((x % (INNER_CELL_SIZE + 1) == 0) || (y % (INNER_CELL_SIZE + 1) == 0)) {   //Coordinate is at an edge; not inside a cell
 			return -1;
 		}
@@ -209,6 +236,9 @@ public class MyPanel extends JPanel {
 		if (x < 0) {   //To the left of the grid
 			return -1;
 		}
+//		if (y > 8) {
+//			return -1;
+//		}
 		if (y < 0) {   //Above the grid
 			return -1;
 		}
