@@ -35,20 +35,20 @@ public class MyPanel extends JPanel {
 		
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				colorArray[x][y] = Color.WHITE;	
+				colorArray[x][y] = new Color(0xFFFFFF);
 			}
 		}
 		
-		for (int i = 0; i < minesArray.length; i++) {
+		for (int i=0; i< minesArray.length;i++) {
 			minesArray[i] = new int[2];
 			int[] coordinatesArray = minesArray[i]; //stores the array of coordinates
-			for (int j = 0; j < minesArray[i].length; j++) {
-				int randomNum = generator.nextInt(9);
-				if (i > 0 && j > 0 && verifyCoordinates(minesArray, coordinatesArray[0], randomNum, i)) { //verifies that the number is not repeated on the second iteration
-					System.out.println("Repeated: " + coordinatesArray[0] + " " + randomNum);
+			for (int j=0; j<minesArray[i].length; j++) {
+				int randomNum= generator.nextInt(9);
+				if (i>0 && j>0 && verifyCoordinates(minesArray, coordinatesArray[0], randomNum, i)) { //verifies that the number is not repeated on the second iteration
+					System.out.println("Repeated: "+coordinatesArray[0]+ " "+ randomNum);
 					randomNum = generator.nextInt(9);
 					minesArray[i][j] = randomNum;
-				} else {
+				}else {
 					minesArray[i][j] = randomNum;
 				}
 
@@ -76,11 +76,10 @@ public class MyPanel extends JPanel {
 		int[] verificationArray = new int[2];
 		for (int i=0; i<iteration ;i++) {
 			verificationArray = minesArray[i];
-			if (verificationArray[0]==xCoordinate && verificationArray[1]== yCoordinate) { //verifies that coordinates given are not in the array supplied
-				return true;
+			if (verificationArray[0]==xCoordinate && verificationArray[1]== yCoordinate) { //verifies that coordinates given are in the array supplied
+				verification= true;
 			}
 		} 
-		
 		return verification;
 	}
 	
@@ -109,7 +108,7 @@ public class MyPanel extends JPanel {
 
 		//By default, the grid will be 10x10 (see above: TOTAL_COLUMNS and TOTAL_ROWS) 
 		g.setColor(Color.BLACK);
-		for (int y = 0; y <= TOTAL_ROWS; y++) {
+		for (int y = 0; y <= TOTAL_ROWS ; y++) {
 			g.drawLine(x1 + GRID_X, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)), x1 + GRID_X + ((INNER_CELL_SIZE + 1) * TOTAL_COLUMNS), y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)));
 		}
 		for (int x = 0; x <= TOTAL_COLUMNS; x++) {
@@ -132,18 +131,33 @@ public class MyPanel extends JPanel {
 	// Verify that the coordinates in the parameters are valid.
 	// Also verifies if there are any mines around the x,y coordinate
 	public void revealAdjacent(int x, int y){
-		if((x<0) || (y<0) || (x>=9) || (y>=9)){
+		if((x<0) || (y<0) || (x>8) || (y>8)){
 			return;
-			} else {
-			///colorArray[x][y] = Color.WHITE;
-			colorArray[x][y] = Color.GRAY;
-			revealAdjacent(x-1, y);
-			revealAdjacent(x+1, y);
-			revealAdjacent(x, y-1);
-			revealAdjacent(x, y+1);
 			}
-		System.out.println("Test");
+		int count = 0;
+		if(!verifyCoordinates(minesArray, x, y) && isRevealed(x, y) && count < 15){
+			count = count +1;
+			colorArray[x][y] = Color.GRAY;
+			System.out.println(count);
+			revealAdjacent(x, y+1);
+			revealAdjacent(x, y-1);
+			revealAdjacent(x+1, y);
+			revealAdjacent(x-1, y);
+			
+			} else {
+				
+				return;}
 		}
+		
+	
+	public boolean isRevealed(int x, int y) {
+		boolean verification = true;
+		if ((x<9 || x>=0 || y<9 || y >=0) && colorArray[x][y] == Color.GRAY) {
+			verification = false;
+		}
+		return verification;
+	}
+	
 
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();

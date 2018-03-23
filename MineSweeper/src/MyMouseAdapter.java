@@ -89,11 +89,14 @@ public class MyMouseAdapter extends MouseAdapter {
 							if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
 								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK; 
 							}else {
+								
+								myPanel.revealAdjacent(gridX, gridY);
+								System.out.println(myPanel.colorArray[gridX][gridY]);
 								//Released the mouse button on the same cell where it was pressed
 								if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
 									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
 								} else {
-									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
+									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
 								}
 							}
 						}
