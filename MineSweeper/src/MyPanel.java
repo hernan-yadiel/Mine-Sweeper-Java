@@ -215,15 +215,15 @@ public class MyPanel extends JPanel {
 		if (y < 0) {   //Above the grid
 			return -1;
 		}
-		
-//		if (x > 8) {
-//			return -1;
-//		}
+
 		if ((x % (INNER_CELL_SIZE + 1) == 0) || (y % (INNER_CELL_SIZE + 1) == 0)) {   //Coordinate is at an edge; not inside a cell
 			return -1;
 		}
 		x = x / (INNER_CELL_SIZE + 1);
 		y = y / (INNER_CELL_SIZE + 1);
+		if (x > 8) {
+			return -1;
+		}
 		return x;
 	}
 	
@@ -236,17 +236,19 @@ public class MyPanel extends JPanel {
 		if (x < 0) {   //To the left of the grid
 			return -1;
 		}
-//		if (y > 8) {
-//			return -1;
-//		}
+		
 		if (y < 0) {   //Above the grid
 			return -1;
 		}
 		if ((x % (INNER_CELL_SIZE + 1) == 0) || (y % (INNER_CELL_SIZE + 1) == 0)) {   //Coordinate is at an edge; not inside a cell
 			return -1;
 		}
+		
 		x = x / (INNER_CELL_SIZE + 1);
 		y = y / (INNER_CELL_SIZE + 1);
+		if (y > 8) {
+			return -1;
+		}
 		return y;
 	}
 }

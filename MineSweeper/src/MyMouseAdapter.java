@@ -72,7 +72,6 @@ public class MyMouseAdapter extends MouseAdapter {
 		
 		switch (e.getButton()) {
 			case 1:		//Left mouse button
-
 				if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
 					//Had pressed outside
 					//Do nothing
@@ -92,11 +91,11 @@ public class MyMouseAdapter extends MouseAdapter {
 								//Released the mouse button on the same cell where it was pressed
 								myPanel.revealAdjacent(gridX, gridY);
 								
-								if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
-									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
-								} else {
-									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
-								}
+//								if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED && gridX<=8 && gridY<=8) {
+//									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
+//								} else {
+//									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
+//								}
 							}
 						}
 					}
@@ -104,15 +103,30 @@ public class MyMouseAdapter extends MouseAdapter {
 				myPanel.repaint();
 				break;
 			case 3:		//Right mouse button
-				if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.GRAY) {
+				if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
+					//Had pressed outside
 					//Do nothing
-				}
-				// Check whether there was a flag in the clicked grid or not, if so the grid is changed back to uncovered (White).
-				else if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
-					myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
-				} else { // If NOT, a flag is placed in the grid(is painted in red).
-					myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
-				}
+				} else {
+					if ((gridX == -1) || (gridY == -1)) {
+						//Is releasing outside
+						//Do nothing
+					} else {
+						if ((myPanel.mouseDownGridX != gridX) || (myPanel.mouseDownGridY != gridY)) {
+							//Released the mouse button on a different cell where it was pressed
+							//Do nothing
+						} else {
+							if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.GRAY) {
+								//Do nothing
+							} else {							// Check whether there was a flag in the clicked grid or not, if so the grid is changed back to uncovered (White).
+								if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
+									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
+									} else { // If NOT, a flag is placed in the grid(is painted in red).
+									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
+								}
+							}
+						}
+					}
+				}		
 				myPanel.repaint();
 				break;
 			default:    //Some other button (2 = Middle mouse button, etc.)
