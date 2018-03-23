@@ -12,7 +12,7 @@ public class MyPanel extends JPanel {
 	private static final int GRID_Y = 25;
 	private static final int INNER_CELL_SIZE = 70;
 	private static final int TOTAL_COLUMNS = 9;
-	private static final int TOTAL_ROWS = 9;   //Last row has only one cell
+	private static final int TOTAL_ROWS = 9;
 	public int x = -1;
 	public int y = -1;
 	public int mouseDownGridX = 0;
@@ -39,9 +39,10 @@ public class MyPanel extends JPanel {
 			}
 		}
 		
+		//
 		for (int i=0; i< minesArray.length;i++) {
 			minesArray[i] = new int[2];
-			int[] coordinatesArray = minesArray[i]; //stores the array of coordinates
+			int[] coordinatesArray = minesArray[i]; //stores the array of the coordinates
 			for (int j=0; j<minesArray[i].length; j++) {
 				int randomNum= generator.nextInt(9);
 				if (i>0 && j>0 && verifyCoordinates(minesArray, coordinatesArray[0], randomNum, i)) { //verifies that the number is not repeated on the second iteration
@@ -52,13 +53,6 @@ public class MyPanel extends JPanel {
 					minesArray[i][j] = randomNum;
 				}
 
-			}
-		}
-		
-		for (int i=0; i< minesArray.length;i++) {
-			System.out.println(" ");
-			for (int j=0; j<minesArray[i].length; j++) {
-				System.out.print(minesArray[i][j]);
 			}
 		}
 	} 
@@ -106,25 +100,24 @@ public class MyPanel extends JPanel {
 		g.setColor(new Color(0x708090));
 		g.fillRect(x1, y1, width + 1, height + 1);
 
-		//By default, the grid will be 10x10 (see above: TOTAL_COLUMNS and TOTAL_ROWS) 
+		
 		g.setColor(Color.BLACK);
 		for (int y = 0; y <= TOTAL_ROWS ; y++) {
 			g.drawLine(x1 + GRID_X, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)), x1 + GRID_X + ((INNER_CELL_SIZE + 1) * TOTAL_COLUMNS), y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)));
 		}
+		
 		for (int x = 0; x <= TOTAL_COLUMNS; x++) {
 			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS)));
 		}
 
-		//Paint cell colors
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				Color c = colorArray[x][y];
+				Color c = colorArray[x][y];			
 				g.setColor(c);
 				g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
 			}
 		}
 	}
-
 
 	// This method helps to find the adjacent boxes that don't have a mine.
 	// It is partially implemented since the verify hasn't been discussed in class
@@ -133,23 +126,53 @@ public class MyPanel extends JPanel {
 	public void revealAdjacent(int x, int y){
 		if((x<0) || (y<0) || (x>8) || (y>8)){
 			return;
-			}
-		int count = 0;
-		if(!verifyCoordinates(minesArray, x, y) && isRevealed(x, y) && count < 15){
-			count = count +1;
+			} else if(!verifyCoordinates(minesArray, x, y) && isRevealed(x, y) && !(nearMine(x, y))){
 			colorArray[x][y] = Color.GRAY;
-			System.out.println(count);
 			revealAdjacent(x, y+1);
 			revealAdjacent(x, y-1);
 			revealAdjacent(x+1, y);
 			revealAdjacent(x-1, y);
-			
-			} else {
-				
-				return;}
+			} else {return;}
 		}
-		
 	
+	/**
+	 * Verifies if there is a near mine of coordinates X and Y
+	 * @param x X Coordinate
+	 * @param y Y Coordinate
+	 * @return return true if there is a near mine. 
+	 */
+	public boolean nearMine(int x,int y) {
+		boolean nearMine = false;
+		int nearMines = 0;
+		if(verifyCoordinates(minesArray, x+1, y) ||
+				verifyCoordinates(minesArray, x-1, y) ||
+				verifyCoordinates(minesArray, x, y+1) ||
+				verifyCoordinates(minesArray, x, y-1) ||
+				verifyCoordinates(minesArray, x+1, y+1) || 
+				verifyCoordinates(minesArray, x+1, y-1) || 
+				verifyCoordinates(minesArray, x-1, y-1) ||
+				verifyCoordinates(minesArray, x-1, y+1)) {
+			nearMine = true;
+			colorArray[x][y] = Color.GRAY;
+		}
+		if(verifyCoordinates(minesArray, x+1, y)) {nearMines +=1;}
+		if(verifyCoordinates(minesArray, x-1, y)) {nearMines +=1;}
+		if(verifyCoordinates(minesArray, x, y+1)) {nearMines +=1;}
+		if(verifyCoordinates(minesArray, x, y-1)) {nearMines +=1;}
+		if(verifyCoordinates(minesArray, x+1, y+1)) {nearMines +=1;}
+		if(verifyCoordinates(minesArray, x-1, y+1)) {nearMines +=1;}
+		if(verifyCoordinates(minesArray, x+1, y-1)) {nearMines +=1;}
+		if(verifyCoordinates(minesArray, x-1, y-1)) {nearMines +=1;}
+		System.out.println(nearMines + " mines near: " + x + ","+ y+ " "+nearMine);
+		return nearMine;
+	}	
+	
+	/**
+	 * Verifies if the cell at coordinates X and Y is revealed (gray) or not (white)
+	 * @param x X Coordinate
+	 * @param y Y Coordinate
+	 * @return Return True if not revealed (white) and False (gray)
+	 */
 	public boolean isRevealed(int x, int y) {
 		boolean verification = true;
 		if ((x<9 || x>=0 || y<9 || y >=0) && colorArray[x][y] == Color.GRAY) {

@@ -91,7 +91,6 @@ public class MyMouseAdapter extends MouseAdapter {
 							}else {
 								
 								myPanel.revealAdjacent(gridX, gridY);
-								System.out.println(myPanel.colorArray[gridX][gridY]);
 								//Released the mouse button on the same cell where it was pressed
 								if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
 									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
@@ -105,7 +104,7 @@ public class MyMouseAdapter extends MouseAdapter {
 				myPanel.repaint();
 				break;
 			case 3:		//Right mouse button
-				if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.LIGHT_GRAY) {
+				if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.GRAY) {
 					//Do nothing
 				}
 				// Check whether there was a flag in the clicked grid or not, if so the grid is changed back to uncovered (White).
