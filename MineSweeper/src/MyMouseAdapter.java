@@ -5,10 +5,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class MyMouseAdapter extends MouseAdapter {
-	
-	
 	public void mousePressed(MouseEvent e) {
 		Component c = e.getComponent();
 		while (!(c instanceof JFrame)) {
@@ -17,36 +16,36 @@ public class MyMouseAdapter extends MouseAdapter {
 				return;
 			}
 		}
-		
+
 		JFrame myFrame = (JFrame) c;
 		MyPanel myPanel = (MyPanel) myFrame.getContentPane().getComponent(0);
 		Insets myInsets = myFrame.getInsets();
 		int x1 = myInsets.left;
 		int y1 = myInsets.top;
 		switch (e.getButton()) {
-			case 1: //left mouse button
-				e.translatePoint(-x1, -y1);
-				int x = e.getX();
-				int y = e.getY();
-				myPanel.x = x;
-				myPanel.y = y;
-				myPanel.mouseDownGridX = myPanel.getGridX(x, y);
-				myPanel.mouseDownGridY = myPanel.getGridY(x, y);
-				myPanel.repaint();
-				break;
-			case 3:		//Right mouse button
-				e.translatePoint(-x1, -y1);
-				x = e.getX();
-				y = e.getY();
-				myPanel.x = x;
-				myPanel.y = y;
-				myPanel.mouseDownGridX = myPanel.getGridX(x, y);
-				myPanel.mouseDownGridY = myPanel.getGridY(x, y);
-				myPanel.repaint();
-				break;
-			default:    //Some other button (2 = Middle mouse button, etc.)
-				//Do nothing
-				break;
+		case 1: //left mouse button
+			e.translatePoint(-x1, -y1);
+			int x = e.getX();
+			int y = e.getY();
+			myPanel.x = x;
+			myPanel.y = y;
+			myPanel.mouseDownGridX = myPanel.getGridX(x, y);
+			myPanel.mouseDownGridY = myPanel.getGridY(x, y);
+			myPanel.repaint();
+			break;
+		case 3:		//Right mouse button
+			e.translatePoint(-x1, -y1);
+			x = e.getX();
+			y = e.getY();
+			myPanel.x = x;
+			myPanel.y = y;
+			myPanel.mouseDownGridX = myPanel.getGridX(x, y);
+			myPanel.mouseDownGridY = myPanel.getGridY(x, y);
+			myPanel.repaint();
+			break;
+		default:    //Some other button (2 = Middle mouse button, etc.)
+			//Do nothing
+			break;
 		}
 	}
 	public void mouseReleased(MouseEvent e) {
@@ -69,69 +68,93 @@ public class MyMouseAdapter extends MouseAdapter {
 		myPanel.y = y;
 		int gridX = myPanel.getGridX(x, y);
 		int gridY = myPanel.getGridY(x, y);
-		
+
 		switch (e.getButton()) {
-			case 1:		//Left mouse button
-				if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
-					//Had pressed outside
+		case 1:		//Left mouse button
+			if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
+				//Had pressed outside
+				//Do nothing
+			} else {
+				if ((gridX == -1) || (gridY == -1)) {
+					//Is releasing outside
 					//Do nothing
 				} else {
-					if ((gridX == -1) || (gridY == -1)) {
-						//Is releasing outside
+					if ((myPanel.mouseDownGridX != gridX) || (myPanel.mouseDownGridY != gridY)) {
+						//Released the mouse button on a different cell where it was pressed
 						//Do nothing
 					} else {
-						if ((myPanel.mouseDownGridX != gridX) || (myPanel.mouseDownGridY != gridY)) {
-							//Released the mouse button on a different cell where it was pressed
-							//Do nothing
+						//Released the mouse on a mine
+						if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
+
+
+							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
+							myPanel.repaint();
+
+							Object[] options = { "Exit Game", "Try Again" };
+							int tryAgainLose = new JOptionPane().showOptionDialog(null, "You have exploited a mine", "GAME OVER!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+							System.out.println("t = " +  tryAgainLose);
+							if(tryAgainLose == 1) {
+								Main.playAgain(1);	 
+							} else { //Play Again
+								System.exit(0);
+							}		
 						} else {
-							//Released the mouse on a mine
-							if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
-								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK; 
-							}else {
-								//Released the mouse button on the same cell where it was pressed
-								myPanel.revealAdjacent(gridX, gridY);
-								
-//								if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED && gridX<=8 && gridY<=8) {
-//									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
-//								} else {
-//									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
-//								}
+							//Released the mouse button on the same cell where it was pressed
+							myPanel.revealAdjacent(gridX, gridY);
+							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
+							myPanel.repaint();
+							System.out.println("User has clicked in x = " + myPanel.mouseDownGridX);
+							System.out.println("User has clicked in y = " + myPanel.mouseDownGridY);
+							//if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED && gridX<=8 && gridY<=8) {
+							//    myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
+							//} else {
+							//    myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
+							//}
+						}
+					}
+				}
+			}
+			myPanel.repaint();
+			break;
+		case 3:		//Right mouse button
+			if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
+				//Had pressed outside
+				//Do nothing
+			} else {
+				if ((gridX == -1) || (gridY == -1)) {
+					//Is releasing outside
+					//Do nothing
+				} else {
+					if ((myPanel.mouseDownGridX != gridX) || (myPanel.mouseDownGridY != gridY)) {
+						//Released the mouse button on a different cell where it was pressed
+						//Do nothing
+					} else {
+						if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.GRAY) {
+							//Do nothing
+						} else {							// Check whether there was a flag in the clicked grid or not, if so the grid is changed back to uncovered (White).
+							if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
+								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
+							} else { // If NOT, a flag is placed in the grid(is painted in red).
+								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
 							}
 						}
 					}
 				}
-				myPanel.repaint();
-				break;
-			case 3:		//Right mouse button
-				if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
-					//Had pressed outside
-					//Do nothing
-				} else {
-					if ((gridX == -1) || (gridY == -1)) {
-						//Is releasing outside
-						//Do nothing
-					} else {
-						if ((myPanel.mouseDownGridX != gridX) || (myPanel.mouseDownGridY != gridY)) {
-							//Released the mouse button on a different cell where it was pressed
-							//Do nothing
-						} else {
-							if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.GRAY) {
-								//Do nothing
-							} else {							// Check whether there was a flag in the clicked grid or not, if so the grid is changed back to uncovered (White).
-								if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
-									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
-									} else { // If NOT, a flag is placed in the grid(is painted in red).
-									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
-								}
-							}
-						}
-					}
-				}		
-				myPanel.repaint();
-				break;
-			default:    //Some other button (2 = Middle mouse button, etc.)
-				//Do nothing
-				break;
+			}		
+			myPanel.repaint();
+			break;
+		default:    //Some other button (2 = Middle mouse button, etc.)
+			//Do nothing
+			break;
+		}
+		if (myPanel.checkGameStatus()) {
+			Object[] options = { "Exit Game", "Play Again" };
+			int tryAgainLose = new JOptionPane().showOptionDialog(null, "WIN!!!", "Game Finished", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+			if(tryAgainLose == 1) { //Try Again
+				Main.playAgain(1);	 
+			} else { // Exit Game
+				System.exit(0);
+			}
 		}
 	}
 }
