@@ -86,7 +86,7 @@ public class MyMouseAdapter extends MouseAdapter {
 						} else {
 							//Released the mouse on a mine
 							if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
-								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK; 
+								myPanel.showAllMines(); 
 							}else {
 								//Released the mouse button on the same cell where it was pressed
 								myPanel.revealAdjacent(gridX, gridY);

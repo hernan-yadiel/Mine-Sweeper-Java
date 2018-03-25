@@ -148,6 +148,13 @@ public class MyPanel extends JPanel {
 			} else {return;}
 		}
 	
+	public void showAllMines() {
+		for (int i=0; i<minesArray.length; i++) {
+			int [] mines = minesArray[i];
+			colorArray[mines[0]][mines[1]]= Color.BLACK;
+		}
+	}
+	
 	/**
 	 * Verifies if there is a near mine of coordinates X and Y
 	 * @param x X Coordinate
