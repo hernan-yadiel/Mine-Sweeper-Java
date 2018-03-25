@@ -84,18 +84,17 @@ public class MyMouseAdapter extends MouseAdapter {
 							//Released the mouse button on a different cell where it was pressed
 							//Do nothing
 						} else {
-							//Released the mouse on a mine
-							if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
-								myPanel.showAllMines(); 
-							}else {
-								//Released the mouse button on the same cell where it was pressed
-								myPanel.revealAdjacent(gridX, gridY);
-								
-//								if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED && gridX<=8 && gridY<=8) {
-//									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
-//								} else {
-//									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
-//								}
+							if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
+								//do nothing
+								} else {
+									if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
+										//Released the mouse on a mine
+										myPanel.showAllMines(); 
+										
+									} else {
+										//Released the mouse button on the same cell where it was pressed
+										myPanel.revealAdjacent(gridX, gridY);
+								}
 							}
 						}
 					}
