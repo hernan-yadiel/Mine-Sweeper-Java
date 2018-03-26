@@ -89,7 +89,16 @@ public class MyMouseAdapter extends MouseAdapter {
 								} else {
 									if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
 										//Released the mouse on a mine
+										
 										myPanel.showAllMines(); 
+										Object[] options = { "Exit Game", "Try Again" };
+										int tryAgainLose = new JOptionPane().showOptionDialog(null, "You have exploited a mine", "GAME OVER!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+										System.out.println("t = " +  tryAgainLose);
+										if(tryAgainLose == 1) {
+										Main.playAgain(1);	 
+										} else { //Play Again
+											System.exit(0);
+												}	
 										
 									} else {
 										//Released the mouse button on the same cell where it was pressed

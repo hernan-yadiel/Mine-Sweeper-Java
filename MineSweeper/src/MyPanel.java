@@ -39,6 +39,7 @@ public class MyPanel extends JPanel {
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
 				colorArray[x][y] = new Color(0xFFFFFF);
+				colorArray[x][y] = Color.WHITE;
 			}
 		}
 		
@@ -98,7 +99,7 @@ public class MyPanel extends JPanel {
 		int width = x2 - x1;
 		int height = y2 - y1;
 		//Paint the background
-		g.setColor(new Color(0x708090));
+		g.setColor(new Color(96,156,225));
 		g.fillRect(x1, y1, width + 1, height + 1);
 		
 		
@@ -209,7 +210,6 @@ public class MyPanel extends JPanel {
 		return verification;
 	}
 	
-
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;
@@ -257,5 +257,25 @@ public class MyPanel extends JPanel {
 			return -1;
 		}
 		return y;
+	}
+	/**
+	 * Checks whether the user has won or not.
+	 * @return Return True if the user has won, false otherwise.
+	 */
+	public boolean checkGameStatus() {
+		int counter = 0;
+		for(int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				System.out.println("X = " + i + "y = " + j + " == " + colorArray[i][j]);
+				if(colorArray[i][j] == Color.WHITE || colorArray[i][j] == Color.RED) {	
+					counter++;
+				}
+			}
+		}
+		System.out.println("Closed cells = " + counter);
+		if (counter == 10) {
+			return true;
+		}
+		return false;
 	}
 }
