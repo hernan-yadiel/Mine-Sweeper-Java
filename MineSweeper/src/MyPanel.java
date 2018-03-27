@@ -58,6 +58,13 @@ public class MyPanel extends JPanel {
 
 			}
 		}
+		
+//		for(int i = 0; i < minesArray.length; i++) {
+//			int[] coordinates = minesArray[i];
+//			for (int j = 0; j < 1; j++) {
+//				System.out.println(+ coordinates[0] + " " + coordinates[1]);
+//				}
+//		}
 	} 
 	
 	/**
@@ -258,6 +265,7 @@ public class MyPanel extends JPanel {
 		}
 		return y;
 	}
+	
 	/**
 	 * Checks whether the user has won or not.
 	 * @return Return True if the user has won, false otherwise.
@@ -266,13 +274,12 @@ public class MyPanel extends JPanel {
 		int counter = 0;
 		for(int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				System.out.println("X = " + i + "y = " + j + " == " + colorArray[i][j]);
-				if(colorArray[i][j] == Color.WHITE || colorArray[i][j] == Color.RED) {	
+				if(colorArray[i][j] == Color.WHITE || colorArray[i][j] == Color.RED && verifyCoordinates(minesArray, i, j)) {	
 					counter++;
 				}
 			}
 		}
-		System.out.println("Closed cells = " + counter);
+
 		if (counter == 10) {
 			return true;
 		}

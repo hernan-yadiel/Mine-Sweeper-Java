@@ -5,9 +5,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class MyMouseAdapter extends MouseAdapter {
-	
 	
 	public void mousePressed(MouseEvent e) {
 		Component c = e.getComponent();
@@ -90,12 +90,14 @@ public class MyMouseAdapter extends MouseAdapter {
 									if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
 										//Released the mouse on a mine
 										
-										myPanel.showAllMines(); 
+										myPanel.showAllMines();
+										myPanel.repaint();
 										Object[] options = { "Exit Game", "Try Again" };
-										int tryAgainLose = new JOptionPane().showOptionDialog(null, "You have exploited a mine", "GAME OVER!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
-										System.out.println("t = " +  tryAgainLose);
+										new JOptionPane();
+										int tryAgainLose = JOptionPane.showOptionDialog(null, "You have exploited a mine", "GAME OVER!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
 										if(tryAgainLose == 1) {
-										Main.playAgain(1);	 
+											Main.playAgain();
+											
 										} else { //Play Again
 											System.exit(0);
 												}	
@@ -140,6 +142,17 @@ public class MyMouseAdapter extends MouseAdapter {
 			default:    //Some other button (2 = Middle mouse button, etc.)
 				//Do nothing
 				break;
+		}
+		
+		if (myPanel.checkGameStatus()) {
+			Object[] options = { "Exit Game", "Play Again" };
+			new JOptionPane();
+			int tryAgainLose = JOptionPane.showOptionDialog(null, "WIN!!!", "Game Finished", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+			if(tryAgainLose == 1) { //Try Again
+				Main.playAgain();
+			} else { // Exit Game
+				System.exit(0);
+			}
 		}
 	}
 }
