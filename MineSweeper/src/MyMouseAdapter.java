@@ -8,7 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class MyMouseAdapter extends MouseAdapter {
+	
 	public void mousePressed(MouseEvent e) {
+		
 		Component c = e.getComponent();
 		while (!(c instanceof JFrame)) {
 			c = c.getParent();
@@ -16,6 +18,7 @@ public class MyMouseAdapter extends MouseAdapter {
 				return;
 			}
 		}
+		
 		JFrame myFrame = (JFrame) c;
 		MyPanel myPanel = (MyPanel) myFrame.getContentPane().getComponent(0);
 		Insets myInsets = myFrame.getInsets();
@@ -23,7 +26,7 @@ public class MyMouseAdapter extends MouseAdapter {
 		int y1 = myInsets.top;
 		
 		switch (e.getButton()) {
-		case 1: //left mouse button
+		case 1:      //left mouse button
 			e.translatePoint(-x1, -y1);
 			int x = e.getX();
 			int y = e.getY();
@@ -49,6 +52,7 @@ public class MyMouseAdapter extends MouseAdapter {
 		}
 	}
 	public void mouseReleased(MouseEvent e) {
+		
 		Component c = e.getComponent();
 		while (!(c instanceof JFrame)) {
 			c = c.getParent();
@@ -56,6 +60,7 @@ public class MyMouseAdapter extends MouseAdapter {
 				return;
 			}
 		}
+		final Color myRed = new Color(229, 57, 53);
 		JFrame myFrame = (JFrame)c;
 		MyPanel myPanel = (MyPanel) myFrame.getContentPane().getComponent(0);  //Can also loop among components to find MyPanel
 		Insets myInsets = myFrame.getInsets();
@@ -84,6 +89,7 @@ public class MyMouseAdapter extends MouseAdapter {
 						//Do nothing
 					} else {
 						//Released the mouse on a mine
+						System.out.println("User has released left mouse button on: x = " + myPanel.mouseDownGridX + " y = " + myPanel.mouseDownGridY);
 						if (myPanel.verifyCoordinates(myPanel.minesArray, myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
 
 
@@ -103,13 +109,6 @@ public class MyMouseAdapter extends MouseAdapter {
 							myPanel.revealAdjacent(gridX, gridY);
 							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
 							myPanel.repaint();
-							System.out.println("User has clicked in x = " + myPanel.mouseDownGridX);
-							System.out.println("User has clicked in y = " + myPanel.mouseDownGridY);
-							//if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED && gridX<=8 && gridY<=8) {
-							//    myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
-							//} else {
-							//    myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
-							//}
 						}
 					}
 				}
@@ -119,7 +118,6 @@ public class MyMouseAdapter extends MouseAdapter {
 		case 3:		//Right mouse button
 			if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
 				//Had pressed outside
-				//Do nothing
 			} else {
 				if ((gridX == -1) || (gridY == -1)) {
 					//Is releasing outside
@@ -129,13 +127,14 @@ public class MyMouseAdapter extends MouseAdapter {
 						//Released the mouse button on a different cell where it was pressed
 						//Do nothing
 					} else {
+						System.out.println("User has released left mouse button on: x = " + myPanel.mouseDownGridX + " y = " + myPanel.mouseDownGridY);
 						if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.GRAY) {
 							//Do nothing
-						} else {							// Check whether there was a flag in the clicked grid or not, if so the grid is changed back to uncovered (White).
-							if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED) {
+						} else {	 // Check whether there was a flag in the clicked grid or not, if so the grid is changed back to uncovered (White).
+							if (myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == myRed) {
 								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
 							} else { // If NOT, a flag is placed in the grid(is painted in red).
-								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
+								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = myRed;
 							}
 						}
 					}

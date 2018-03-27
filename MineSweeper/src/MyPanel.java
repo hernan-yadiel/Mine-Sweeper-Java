@@ -56,7 +56,6 @@ public class MyPanel extends JPanel {
 			}
 		}
 
-		//
 		for (int i=0; i< minesArray.length;i++) {
 			minesArray[i] = new int[2];
 			int[] coordinatesArray = minesArray[i]; //stores the array of the coordinates
@@ -145,9 +144,7 @@ public class MyPanel extends JPanel {
 	}
 
 	// This method helps to find the adjacent boxes that don't have a mine.
-	// It is partially implemented since the verify hasn't been discussed in class
-	// Verify that the coordinates in the parameters are valid.
-	// Also verifies if there are any mines around the x,y coordinate
+	// Also verifies if there are any mines around the x,y coordinate.
 	public void revealAdjacent(int x, int y){
 
 		if((x<0) || (y<0) || (x>8) || (y>8)){
@@ -268,11 +265,12 @@ public class MyPanel extends JPanel {
 	 * @return Return True if the user has won, false otherwise.
 	 */
 	public boolean checkGameStatus() {
+		final Color myRed = new Color(229, 57, 53);
 		int counter = 0;
 		for(int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				System.out.println("X = " + i + "y = " + j + " == " + colorArray[i][j]);
-				if(colorArray[i][j] == Color.WHITE || colorArray[i][j] == Color.RED) {	
+				//System.out.println("X = " + i + "y = " + j + " == " + colorArray[i][j]);
+				if(colorArray[i][j] == Color.WHITE || colorArray[i][j] == myRed) {	
 					counter++;
 				}
 			}
@@ -280,7 +278,7 @@ public class MyPanel extends JPanel {
 
 		this.numOfUnopenedCells.setText("" + (counter - 10));
 
-		System.out.println("Uncovered = " + counter);
+		System.out.println("Number of uncovered = " + counter);
 		if (counter == 10) {
 			return true;
 		}
