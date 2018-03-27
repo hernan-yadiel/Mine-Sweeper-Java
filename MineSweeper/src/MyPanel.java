@@ -280,6 +280,10 @@ public class MyPanel extends JPanel {
 			}
 		}
 
+
+		this.numOfUnopenedCells.setText("" + (counter - 10));
+
+		System.out.println("Number of uncovered = " + counter);
 		if (counter == 10) {
 			return true;
 		}
