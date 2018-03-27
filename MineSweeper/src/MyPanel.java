@@ -70,13 +70,6 @@ public class MyPanel extends JPanel {
 
 			}
 		}
-		for (int i=0; i< minesArray.length;i++) {
-			int[] coordinates = minesArray[i]; //stores the array of the coordinates
-			System.out.println(" ");
-			for (int j=0; j<1; j++) {
-				System.out.print(coordinates[0] + " " + coordinates[1]);
-			}
-		}
 	} 
 	
 	/**

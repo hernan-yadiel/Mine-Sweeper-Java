@@ -96,7 +96,6 @@ public class MyMouseAdapter extends MouseAdapter {
 										Object[] options = { "Exit Game", "Try Again" };
 										new JOptionPane();
 										int tryAgainLose = JOptionPane.showOptionDialog(null, "You have exploited a mine", "GAME OVER!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
-										System.out.println("t = " +  tryAgainLose);
 										if(tryAgainLose == 1) {
 											Main.playAgain();	 
 										} else { //Play Again
