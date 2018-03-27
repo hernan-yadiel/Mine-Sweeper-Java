@@ -19,3 +19,11 @@ The following **additional** features were implemented:
 
 * [x] Shows remaning cells to be opened.
 * [x] User is able to play again if he wins or lose.
+
+## Video Walkthrough 
+
+Here's a walkthrough of implemented user stories:
+
+![Alt Text](https://media.giphy.com/media/289JuEFEblWGZ6gvqJ/giphy.gif)
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
