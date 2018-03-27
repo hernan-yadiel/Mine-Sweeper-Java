@@ -16,12 +16,12 @@ public class MyMouseAdapter extends MouseAdapter {
 				return;
 			}
 		}
-
 		JFrame myFrame = (JFrame) c;
 		MyPanel myPanel = (MyPanel) myFrame.getContentPane().getComponent(0);
 		Insets myInsets = myFrame.getInsets();
 		int x1 = myInsets.left;
 		int y1 = myInsets.top;
+		
 		switch (e.getButton()) {
 		case 1: //left mouse button
 			e.translatePoint(-x1, -y1);
@@ -94,7 +94,7 @@ public class MyMouseAdapter extends MouseAdapter {
 							int tryAgainLose = new JOptionPane().showOptionDialog(null, "You have exploited a mine", "GAME OVER!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
 							System.out.println("t = " +  tryAgainLose);
 							if(tryAgainLose == 1) {
-								Main.playAgain(1);	 
+								Main.playAgain();	 
 							} else { //Play Again
 								System.exit(0);
 							}		
@@ -151,7 +151,7 @@ public class MyMouseAdapter extends MouseAdapter {
 			Object[] options = { "Exit Game", "Play Again" };
 			int tryAgainLose = new JOptionPane().showOptionDialog(null, "WIN!!!", "Game Finished", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
 			if(tryAgainLose == 1) { //Try Again
-				Main.playAgain(1);	 
+				Main.playAgain();	 
 			} else { // Exit Game
 				System.exit(0);
 			}

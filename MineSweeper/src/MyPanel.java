@@ -5,10 +5,11 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel {
-	
+
 	private static final long serialVersionUID = 3426940946811133635L;
 	private static final int GRID_X = 25;
 	private static final int GRID_Y = 25;
@@ -20,12 +21,24 @@ public class MyPanel extends JPanel {
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
 	private Random generator = new Random();
-	
+
+	JLabel title;
+	JLabel unopenedCells;
+	JLabel numOfUnopenedCells;
+
 	public ArrayList<Integer[]> cellsNearMines = new ArrayList<Integer[]>();
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	public int[][] minesArray = new int[TOTAL_COLUMNS+1][];
-	
-	public MyPanel() {   //This is the constructor... this code runs first to initialize
+
+	public MyPanel() { 
+		
+		unopenedCells = new JLabel("Uncovered Cells: ");
+		unopenedCells.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+		numOfUnopenedCells = new JLabel("71");
+		numOfUnopenedCells.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+		add(unopenedCells);
+		add(numOfUnopenedCells);
+
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("INNER_CELL_SIZE must be positive!");
 		}
@@ -35,14 +48,14 @@ public class MyPanel extends JPanel {
 		if (TOTAL_ROWS + (new Random()).nextInt(1) < 3) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("TOTAL_ROWS must be at least 3!");
 		}
-		
+
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
 				colorArray[x][y] = new Color(0xFFFFFF);
 				colorArray[x][y] = Color.WHITE;
 			}
 		}
-		
+
 		//
 		for (int i=0; i< minesArray.length;i++) {
 			minesArray[i] = new int[2];
@@ -59,7 +72,7 @@ public class MyPanel extends JPanel {
 			}
 		}
 	} 
-	
+
 	/**
 	 * Test if the given X and Y coordinates are in the Coordinate Array
 	 * @param minesArray to be verified
@@ -79,14 +92,14 @@ public class MyPanel extends JPanel {
 		} 
 		return verification;
 	}
-	
+
 	public boolean verifyCoordinates(int [][] minesArray, int xCoordinate, int yCoordinate) {
 		boolean verification = false;
 		int iteration = minesArray.length;
 		verification = verifyCoordinates(minesArray, xCoordinate, yCoordinate, iteration);
 		return verification;
 	}
-	
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -100,14 +113,13 @@ public class MyPanel extends JPanel {
 		int height = y2 - y1;
 		//Paint the background
 		g.setColor(new Color(96,156,225));
-		g.fillRect(x1, y1, width + 1, height + 1);
-		
-		
+		g.fillRect(x1, y1, width + 1, height + 1);		
+
 		g.setColor(Color.BLACK);
 		for (int y = 0; y <= TOTAL_ROWS ; y++) {
 			g.drawLine(x1 + GRID_X, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)), x1 + GRID_X + ((INNER_CELL_SIZE + 1) * TOTAL_COLUMNS), y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)));
 		}
-		
+
 		for (int x = 0; x <= TOTAL_COLUMNS; x++) {
 			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS)));
 		}
@@ -119,7 +131,7 @@ public class MyPanel extends JPanel {
 				g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
 			}
 		}
-		
+
 		g.setColor(Color.WHITE); 
 		g.setFont(new Font("TimesRoman", Font.PLAIN, GRID_X));
 		for (int i=0; i<cellsNearMines.size(); i++) {
@@ -140,15 +152,15 @@ public class MyPanel extends JPanel {
 
 		if((x<0) || (y<0) || (x>8) || (y>8)){
 			return;
-			} else if(isRevealed(x, y) && !(nearMine(x, y))){
+		} else if(isRevealed(x, y) && !(nearMine(x, y))){
 			colorArray[x][y] = Color.GRAY;
 			revealAdjacent(x, y+1);
 			revealAdjacent(x, y-1);
 			revealAdjacent(x+1, y);
 			revealAdjacent(x-1, y);
-			} else {return;}
-		}
-	
+		} else {return;}
+	}
+
 	/**
 	 * Verifies if there is a near mine of coordinates X and Y
 	 * @param x X Coordinate
@@ -158,7 +170,7 @@ public class MyPanel extends JPanel {
 	public boolean nearMine(int x,int y) {
 		boolean nearMine = false;
 		int nearMines = 0;
-		
+
 		if(verifyCoordinates(minesArray, x+1, y) ||
 				verifyCoordinates(minesArray, x-1, y) ||
 				verifyCoordinates(minesArray, x, y+1) ||
@@ -170,8 +182,8 @@ public class MyPanel extends JPanel {
 			nearMine = true;
 			colorArray[x][y] = Color.GRAY;			
 		}
-		
-		
+
+
 		if(verifyCoordinates(minesArray, x+1, y)) {nearMines +=1;}
 		if(verifyCoordinates(minesArray, x-1, y)) {nearMines +=1;}
 		if(verifyCoordinates(minesArray, x, y+1)) {nearMines +=1;}
@@ -180,15 +192,15 @@ public class MyPanel extends JPanel {
 		if(verifyCoordinates(minesArray, x-1, y+1)) {nearMines +=1;}
 		if(verifyCoordinates(minesArray, x+1, y-1)) {nearMines +=1;}
 		if(verifyCoordinates(minesArray, x-1, y-1)) {nearMines +=1;}
-		
+
 		if(nearMine == true) {
 			Integer[] minesNearCells = {x,y, nearMines};
 			cellsNearMines.add(minesNearCells);
 		}
-		
- 		return nearMine;
+
+		return nearMine;
 	}	
-	
+
 	/**
 	 * Verifies if the cell at coordinates X and Y is revealed (gray) or not (white)
 	 * @param x X Coordinate
@@ -202,7 +214,7 @@ public class MyPanel extends JPanel {
 		}
 		return verification;
 	}
-	
+
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;
@@ -226,7 +238,7 @@ public class MyPanel extends JPanel {
 		}
 		return x;
 	}
-	
+
 	public int getGridY(int x, int y) {
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;
@@ -236,14 +248,14 @@ public class MyPanel extends JPanel {
 		if (x < 0) {   //To the left of the grid
 			return -1;
 		}
-		
+
 		if (y < 0) {   //Above the grid
 			return -1;
 		}
 		if ((x % (INNER_CELL_SIZE + 1) == 0) || (y % (INNER_CELL_SIZE + 1) == 0)) {   //Coordinate is at an edge; not inside a cell
 			return -1;
 		}
-		
+
 		x = x / (INNER_CELL_SIZE + 1);
 		y = y / (INNER_CELL_SIZE + 1);
 		if (y > 8) {
@@ -265,7 +277,10 @@ public class MyPanel extends JPanel {
 				}
 			}
 		}
-		System.out.println("Closed cells = " + counter);
+
+		this.numOfUnopenedCells.setText("" + (counter - 10));
+
+		System.out.println("Uncovered = " + counter);
 		if (counter == 10) {
 			return true;
 		}
