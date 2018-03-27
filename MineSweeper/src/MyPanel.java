@@ -5,6 +5,7 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel {
@@ -20,12 +21,23 @@ public class MyPanel extends JPanel {
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
 	private Random generator = new Random();
+	JLabel title;
+	JLabel unopenedCells;
+	JLabel numOfUnopenedCells;
 	
 	public ArrayList<Integer[]> cellsNearMines = new ArrayList<Integer[]>();
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	public int[][] minesArray = new int[TOTAL_COLUMNS+1][];
 	
 	public MyPanel() {   //This is the constructor... this code runs first to initialize
+		
+		unopenedCells = new JLabel("Uncovered Cells: ");
+		unopenedCells.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+		numOfUnopenedCells = new JLabel("71");
+		numOfUnopenedCells.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+		add(unopenedCells);
+		add(numOfUnopenedCells);
+
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("INNER_CELL_SIZE must be positive!");
 		}
@@ -58,13 +70,13 @@ public class MyPanel extends JPanel {
 
 			}
 		}
-		
-//		for(int i = 0; i < minesArray.length; i++) {
-//			int[] coordinates = minesArray[i];
-//			for (int j = 0; j < 1; j++) {
-//				System.out.println(+ coordinates[0] + " " + coordinates[1]);
-//				}
-//		}
+		for (int i=0; i< minesArray.length;i++) {
+			int[] coordinates = minesArray[i]; //stores the array of the coordinates
+			System.out.println(" ");
+			for (int j=0; j<1; j++) {
+				System.out.print(coordinates[0] + " " + coordinates[1]);
+			}
+		}
 	} 
 	
 	/**
@@ -280,10 +292,7 @@ public class MyPanel extends JPanel {
 			}
 		}
 
-
 		this.numOfUnopenedCells.setText("" + (counter - 10));
-
-		System.out.println("Number of uncovered = " + counter);
 		if (counter == 10) {
 			return true;
 		}

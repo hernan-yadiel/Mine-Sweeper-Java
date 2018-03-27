@@ -1,14 +1,9 @@
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Main {
-<<<<<<< HEAD
+
 
 	static JFrame myFrame = new JFrame("Mine Sweeper");
-=======
->>>>>>> refs/heads/fix
-	
-	static JFrame myFrame = new JFrame("Minesweeper");
 
 	public static void main(String[] args) {
 
@@ -17,10 +12,7 @@ public class Main {
 		myFrame.setSize(700, 700);
 		MyMouseAdapter myMouseAdapter = new MyMouseAdapter();
 		myFrame.addMouseListener(myMouseAdapter);
-<<<<<<< HEAD
 
-=======
->>>>>>> refs/heads/fix
 		startGame();
 	}
 	
@@ -32,11 +24,8 @@ public class Main {
 	
 	static void playAgain() {
 		myFrame.getContentPane().removeAll();
-<<<<<<< HEAD
 		myFrame.getContentPane().repaint();
 		startGame();	 
-=======
-		Main.startGame();	 
->>>>>>> refs/heads/fix
+
 	}
 }
